@@ -17,7 +17,7 @@ type config struct {
 func main() {
 	var cfg config
 
-	if err := toml.NewEncoder(os.Stdout).Encode(&cfg); err != nil {
+	if err := toml.NewEncoder(os.Stdout, toml.SetNewLineType(toml.OptionNewLineCRLF)).Encode(&cfg); err != nil {
 		fmt.Println(err)
 		return
 	}
