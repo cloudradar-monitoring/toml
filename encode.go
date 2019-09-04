@@ -191,7 +191,8 @@ func (enc *Encoder) encode(key Key, rv reflect.Value) {
 		enc.encode(key, rv.Elem())
 	case reflect.Map:
 		if rv.IsNil() {
-			return
+			// allow encode of empty map sections
+			// return
 		}
 		enc.eTable(key, rv)
 	case reflect.Ptr:
@@ -403,8 +404,8 @@ func (enc *Encoder) eStruct(key Key, rv reflect.Value) {
 			sft := rt.FieldByIndex(fieldIndex)
 			sf := rv.FieldByIndex(fieldIndex)
 			if isNil(sf) {
-				// Don't write anything for nil fields.
-				continue
+				// encode empty fields
+				// continue
 			}
 
 			opts := getOptions(sft.Tag)
