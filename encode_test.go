@@ -143,7 +143,7 @@ func TestEncode(t *testing.T) {
 			input: struct{ IntSliceNil, IntSlice0, IntSlice3 []int }{
 				nil, []int{}, []int{1, 2, 3},
 			},
-			wantOutput: "IntSlice0 = []\nIntSlice3 = [1, 2, 3]\n",
+			wantOutput: "IntSliceNil = []\nIntSlice0 = []\nIntSlice3 = [1, 2, 3]\n",
 		},
 		"datetime slices": {
 			input: struct{ DatetimeSlice []time.Time }{
@@ -512,6 +512,17 @@ func TestEncodeOmitemptyWithEmptyName(t *testing.T) {
 	v := simple{[]int{1, 2, 3}}
 	expected := "S = [1, 2, 3]\n"
 	encodeExpected(t, "simple with omitempty, no name, non-empty field",
+		v, expected, nil)
+}
+
+// added test to fork for changed functionality: we encode empty maps in output
+func TestEncodeOutputEmptyMap(t *testing.T) {
+	type simple struct {
+		I map[string]string
+	}
+	v := simple{}
+	expected := "[I]\n"
+	encodeExpected(t, "empty map is encoded",
 		v, expected, nil)
 }
 
